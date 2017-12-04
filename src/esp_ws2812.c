@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <esp/hwrand.h>
+
 #include <FreeRTOS.h>
 #include <task.h>
 
@@ -10,7 +12,7 @@
 
 #define LEDS_COUNT  50
 #define LEDS_SATURATION 160
-#define LEDS_LUMINANCE 20
+#define LEDS_LUMINANCE 40
 
 #define HUE_STEP 3
 
@@ -97,7 +99,7 @@ void esp_ws2812(void *pvParameters) {
 
     while (1) {
         if (abs(hue_cur - hue_dst) < HUE_STEP) {
-            hue_dst = rand() % 255;
+            hue_dst = hwrand() % 255;
         }
         hue_step_sign = (hue_cur < hue_dst) ? 1 : -1;
         hue_cur += HUE_STEP * hue_step_sign;
