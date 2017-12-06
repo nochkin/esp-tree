@@ -94,11 +94,15 @@ void set_pixels_color(uint8_t hue_val, uint8_t lum_val) {
     }
 }
 
+static uint8_t hue_cur = 0;
+static uint8_t hue_dst = 0;
+
 void rainbow(uint32_t *pos) {
     for (uint16_t num=0; num<LEDS_COUNT; num++) {
         set_pixel_color(num, (*pos + num) & 0xff, LEDS_LUMINANCE);
     }
     *pos += 1;
+    hue_cur = *pos;
 }
 
 void push_led(uint8_t hue_val, uint8_t lum_val) {
@@ -112,9 +116,6 @@ void push_led(uint8_t hue_val, uint8_t lum_val) {
 
     set_pixel_color(LEDS_COUNT - 1, hue_val, lum_val);
 }
-
-static uint8_t hue_cur = 0;
-static uint8_t hue_dst = 0;
 
 void falling_color(uint32_t *pos) {
     if (abs(hue_cur - hue_dst) < HUE_STEP) {
@@ -151,8 +152,7 @@ void running_single_color(uint32_t *pos) {
 }
 
 void blink(uint32_t *pos) {
-    if (*pos == 0) *pos = hwrand() % 255;
-    set_pixels_color((20 - hwrand() % 40) + *pos, LEDS_LUMINANCE);
+    set_pixels_color((20 - hwrand() % 40) + hue_cur, LEDS_LUMINANCE);
 }
 
 void leds_off(uint32_t *pos) {
