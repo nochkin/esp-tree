@@ -128,11 +128,11 @@ void falling_color(uint32_t *pos) {
 }
 
 void running_color(uint32_t *pos) {
-    uint8_t run_len = 7;
+    uint8_t run_len = 9;
     uint8_t lum_val = (*pos >= run_len) ? 0 : ((LEDS_LUMINANCE / run_len) * (run_len - *pos));
     push_led(hue_cur, lum_val);
     *pos += 1;
-    if (*pos > (LEDS_COUNT / 2)) {
+    if (*pos > (LEDS_COUNT / 3)) {
         *pos = 0;
         hue_cur = hwrand() % 255;
     }
@@ -145,7 +145,7 @@ void running_single_color(uint32_t *pos) {
         push_led(hue_cur, 0);
     }
     *pos += 1;
-    if (*pos > (LEDS_COUNT / 3)) {
+    if (*pos > (LEDS_COUNT / 4)) {
         *pos = 0;
         hue_cur = hwrand() % 255;
     }
@@ -153,6 +153,18 @@ void running_single_color(uint32_t *pos) {
 
 void blink(uint32_t *pos) {
     set_pixels_color((20 - hwrand() % 40) + hue_cur, LEDS_LUMINANCE);
+}
+
+void snake(uint32_t *pos) {
+    uint8_t run_len = LEDS_COUNT / 1.5;
+    float lum_step = (float)LEDS_LUMINANCE / (float)run_len;
+    uint8_t lum_val = (*pos >= run_len) ? 0 : (lum_step * (run_len - *pos));
+    push_led(hue_cur, lum_val);
+    *pos += 1;
+    if (*pos >= (LEDS_COUNT / 1.2)) {
+        *pos = 0;
+        hue_cur = hwrand() % 255;
+    }
 }
 
 void leds_off(uint32_t *pos) {
@@ -164,8 +176,8 @@ void esp_ws2812(void *pvParameters) {
     memset(pixels, 0, sizeof(ws2812_pixel_t) * LEDS_COUNT);
 
     uint32_t pos = 0;
-    uint8_t fx = 0;
-    uint8_t fx_count = 5;
+    uint8_t fx = 5;
+    uint8_t fx_count = 6;
 
     uint32_t my_time = sdk_system_get_time();
     uint32_t delay = 20;
@@ -191,6 +203,10 @@ void esp_ws2812(void *pvParameters) {
             case 4:
                 delay = 100;
                 running_single_color(&pos);
+                break;
+            case 5:
+                delay = 30;
+                snake(&pos);
                 break;
             default:
                 delay = 1000;
