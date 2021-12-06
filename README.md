@@ -12,10 +12,10 @@ Run "make flash" to flash it to your ESP8266 module over serial using esptool.
 Assuming you have all dependendices installed:
 ```
 git clone --recursive https://github.com/esp-open-sdk/esp-open-sdk
-cd esp-open-sdk
+cd esp-open-sdk/sdk
 make toolchain esptool libhal STANDALONE=n
 export PATH=$PATH:`pwd`/xtensa-lx106-elf/bin
-cd ..
+cd ../..
 
 git clone --recursive https://github.com/SuperHouse/esp-open-rtos
 git clone https://github.com/nochkin/esp-tree
