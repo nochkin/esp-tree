@@ -1,0 +1,4 @@
+0x0000 rboot.bin
+0x1000 blank_config.bin
+0x2000 esp_ws2812.bin
+
