@@ -25,3 +25,9 @@ make flash
 ```
 
 If you change the code, all consecutive updates can be done using "make flash" or over air using "ESP_IP=192.168.4.1 make webflash" command, where you put the  IP of your ESP8266 in ESP_IP.
+
+# Binaries
+You can find pre-compiled binaries in "firmware" directory.
+Here are the settings I used to flash my ESP8266 board:
+![ESP8266 Download Tool](/firmware/esp8266-download-tool.png)
+
